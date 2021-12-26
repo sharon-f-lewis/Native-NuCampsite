@@ -43,7 +43,7 @@ function RenderComments({ comments}) {
         <Text style={{fontsize: 12}}>{item.rating} Stars</Text>
         <Text style={{fontsize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
       </View>
-    )
+    );
   };
 
   return (
