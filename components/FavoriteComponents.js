@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, View, Text, StyleSheet } from 'react-native';
+import { FlatList, View, Text, StyleSheet, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Loading } from './LoadingComponent';
@@ -35,7 +35,23 @@ class Favorites extends Component {
           <View style={styles.deleteView}>
             <TouchableOpacity
               style={styles.deleteTouchable}
-              onPress={() => this.props.deleteFavorite(item.id)}
+              onPress={() => 
+                Alert.alert(
+                  'Delete Favorite?',
+                  'Are you sure you wish to delete the favorite campsite ' + item.name + '?',
+                  [
+                    {
+                      text: 'Cancel',
+                      onPress: () => console.log(item.name + 'Not Deleted'),
+                      style: 'cancel'
+                    },
+                    {
+                      text: 'OK',
+                      onPress: () => this.props.deleteFavorite(item.id)
+                    }
+                  ],
+                  { cancelable: false }
+              )}
             >
               <Text style={styles.deleteText}>Delete</Text>
             </TouchableOpacity>
@@ -45,12 +61,12 @@ class Favorites extends Component {
               title= {item.name}
               subtitle={item.description}
               leftAvatar={{source: {uri: baseUrl + item.image}}}
-              onPress={() => navigate('CampsiteInfo', {campsiteId: item.id} )}
+              onPress={() => navigate('CampsiteInfo', {campsiteId: item.id})}
             />
           </View>
         </SwipeRow>
-      )
-    }
+      );
+    };
     
     if (this.props.campsites.isLoading) {
       return <Loading />;
@@ -66,7 +82,8 @@ class Favorites extends Component {
 
     return (
       <FlatList
-        data={this.props.campsites.campsites.filter(campsite => this.props.favorites.includes(campsite.id)
+        data={this.props.campsites.campsites.filter(
+          campsite => this.props.favorites.includes(campsite.id)
         )}
         renderItem={renderFavoriteItem}
         keyExtractor={item => item.id.toString()}
