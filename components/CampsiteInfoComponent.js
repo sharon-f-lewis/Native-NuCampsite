@@ -20,7 +20,12 @@ const mapDispatchToProps = {
 }
 
 function RenderCampsite(props) {
-  console.log('RenderCampsite');
+
+  function recognizeComment(gestureState) {
+    console.log('recognize comment' + gestureState);
+    console.log(gestureState.dx);
+    return (gestureState.dx > 200) ? true : false;
+  }
 
   const {campsite} = props;
 
@@ -54,6 +59,9 @@ function RenderCampsite(props) {
           ],
           { cancelable: false }
         );
+      } else if (recognizeComment(gestureState)) {
+        console.log('Drag left to right');
+        props.onShowModal();
       }
       return true;
     }
